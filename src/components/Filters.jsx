@@ -27,7 +27,7 @@ export default function Filters({
           <select
             id="paidBy"
             value={paidBy}
-            onChange={(e) => onPaidBy(e.target.value)}
+            onChange={(e) => onPaidBy(e.target.value === "" ? "" : Number(e.target.value))}
           >
             <option value="">Anyone</option>
             {members.map((m) => (

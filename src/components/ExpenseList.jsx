@@ -59,7 +59,14 @@ export default function ExpenseList({
   onUpdateAt,
 }) {
   const memberMap = Object.fromEntries(members.map((m) => [m.id, m]));
-  const sorted = [...expenses].sort((a, b) => dateValue(a.date) - dateValue(b.date));
+  const sorted = [...expenses].sort((a, b) => dateValue(b.date) - dateValue(a.date));
+
+  function findOriginalIndex(sortedIndex) {
+    const target = sorted[sortedIndex];
+    return expenses.findIndex(
+      (e) => e.id === target.id && e.description === target.description && e.date === target.date
+    );
+  }
 
   return (
     <section className="card">
@@ -73,8 +80,8 @@ export default function ExpenseList({
             key={index}
             expense={expense}
             memberMap={memberMap}
-            onDelete={() => onDeleteAt(index)}
-            onSaveAmount={(amount) => onUpdateAt(index, { amount })}
+            onDelete={() => onDeleteAt(findOriginalIndex(index))}
+            onSaveAmount={(amount) => onUpdateAt(findOriginalIndex(index), { amount })}
           />
         ))
       )}
